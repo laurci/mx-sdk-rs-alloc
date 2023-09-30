@@ -31,6 +31,15 @@ macro_rules! imports {
                 *,
             },
         };
+
+        extern crate alloc;
+        #[no_mangle]
+        pub extern "C" fn mx_alloc(len: i32) -> *const u8 {
+            let mut vec = alloc::vec::Vec::with_capacity(len as usize);
+            let ptr = vec.as_mut_ptr();
+            core::mem::forget(vec);
+            ptr
+        }
     };
 }
 
